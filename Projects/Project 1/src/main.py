@@ -37,7 +37,7 @@ def adaptive_histogram_equalization(image, neighborhood_shape = (5, 5)):
 
     return g
 
-def adaptive_statistical_enhancement(image, neighborhood_shape = (5,5), k0=0.4, k1=0.02, k2=0.4, E=3):
+def adaptive_statistical_enhancement(image, neighborhood_shape = (5,5), k0=0.4, k1=0.02, k2=0.4, E=4):
     assert 0 <= k0 <= 1, "k0 must be a constant < 1"
     assert 0 <= k1 <= 1, "k1 must be a constant < 1"
     assert 0 <= k2 <= 1, "k2 must be a constant < 1"
@@ -112,17 +112,26 @@ if __name__ == "__main__":
 
     if(len(args) != 2):
         print("Command Line Arguments should follow the format:")
-        print("python ImageStatistics.py [relative_image_path]")
+        print("python main.py [relative_image_path]")
     else:
         image_path = args[1]
 
         image = FileManager.read_grayscale_image(image_path)
 
+        print("Displaying image...")
+        display_image(image)
+
         equalized_image = cv2.equalizeHist(image)
 
         ahe_image = adaptive_histogram_equalization(image)
 
+        print("Displaying ahe_image...")
+        display_image(ahe_image)
+
         ase_image = adaptive_statistical_enhancement(image)
+
+        print("Displaying ase_image...")
+        display_image(ase_image)
 
         # stack images side by side
         res = np.hstack((image, equalized_image, ahe_image, ase_image))
