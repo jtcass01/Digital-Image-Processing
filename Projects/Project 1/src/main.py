@@ -17,7 +17,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from skimage import exposure
 from scipy.stats import norm
-
 from FileManager import FileManager
 
 def display_image(image):
