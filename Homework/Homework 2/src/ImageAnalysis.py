@@ -4,11 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from FileManager import FileManager
 
-def display_image(image):
-    # Display image:
-    plt.imshow(image, cmap='gray')
-    plt.show()
-
 class ImageAnalysis():
     @staticmethod
     def calculate_bit_planes(image, gray_scale=True, bits_per_pixel=8):
@@ -29,7 +24,7 @@ def display_bit_planes(bit_planes):
     number_of_rows, number_of_columns, number_of_bit_planes = bit_planes.shape
 
     for bit_plane_index in range(number_of_bit_planes):
-        print("bit plane {}".format(bit_plane_index))
+        print("bit plane {}".format(bit_plane_index), bit_planes[bit_plane_index])
         display_image(bit_planes[:, :, bit_plane_index])
 
 

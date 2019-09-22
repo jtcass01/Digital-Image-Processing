@@ -1,0 +1,28 @@
+3.5
+Do the following:
+(a) Purpose a method for extracting the bit planes of an image based on
+converting the value of its pixels to binary.
+(b) Find all the bit planes o the following 4-bit image:
+        0  1  8  6
+        2  2  1  1
+        1  15 14 12
+        3  6  9  10
+
+3.7
+Obtain the unnormalized and the normalized histograms of the following 8-bit,
+MxN image.  Give your histogram either in a table or a graph, labeling clearly
+the value and location of each histogram component in terms of M and N.
+Double-check your answer by making sure that the histogram components add to the
+correct value.
+
+3.14
+An image with intensities in the range [0, 1] has the pdf, p(r), shown in the
+following figure.  It is desired to transform the intensity levels of this image
+so that they will have the specified p(z) shown in the figure.  Assume continuous
+quantities, and find the transform that will accomplish this.
+
+3.19
+The image in Fig 3.30(c) is of size 1000 x 683 pixels.  Its histogram, labeled
+"b" in Fig. 3.30(b), was intended to be uniform, but the result is not quite
+uniform (observe the shape change at the low end of the intensity scale).
+How do you explain this?
