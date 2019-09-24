@@ -47,6 +47,10 @@ class ImageStatistics(object):
         hist = ImageStatistics.calculate_histogram(image, bits_per_pixel)
         return hist / N
 
+    @staticmethod
+    def normalize_image(image, bits_per_pixel=8):
+        return image / (2**bits_per_pixel)
+
 
 if __name__ == "__main__":
     args = sys.argv

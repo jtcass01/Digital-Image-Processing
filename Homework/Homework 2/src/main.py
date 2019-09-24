@@ -64,7 +64,32 @@ def three_seven():
     Double-check your answer by making sure that the histogram components add to the
     correct value.
     """
-    pass
+    figure_image = np.array([
+    [240, 240, 240,  16,  16,  16,  32,  32,  32,  32,  32,  32,  32],
+    [240, 240, 240,  16,  16,  16, 228,  32,  32,  32,  32,  32, 255],
+    [240, 240, 240,  16,  16,  16, 228, 228,  32,  32,  32, 255, 255],
+    [240, 240, 240,  16,  16,  16, 228, 228, 228,  32, 255, 255, 255],
+    [240, 240, 240,  16,  16,  16, 228, 228, 228,   0, 255, 255, 255],
+    [240, 240, 240,  16,  16,  16, 228, 228,   0,   0,   0, 255, 255],
+    [240, 240, 240,  16,  16,  16, 228,   0,   0,   0,   0,   0, 255],
+    [240, 240, 240,  16,  16,  16,   0,   0,   0,   0,   0,   0,   0],
+    [127, 127, 127, 191, 191, 191,   0,   0,   0,   0,   0,   0,   0],
+    [127, 127, 127, 191, 191, 191,   0,   0,   0,   0,   0,   0,   0],
+    [127, 127, 127, 191, 191, 191,   0,   0,   0,   0,   0,   0,   0],
+    ])
+
+    normalized_image = ImageStatistics.normalize_image(figure_image, 8)
+
+    histogram = ImageStatistics.calculate_histogram(figure_image)
+    normalized_histogram = ImageStatistics.calculate_histogram(normalized_image)
+
+    plt.plot(histogram, label="unnormalized histogram")
+    plt.legend()
+    plt.show()
+
+    plt.plot(normalized_histogram, label="normalized histogram")
+    plt.legend()
+    plt.show()
 
 
 def three_fourteen():
