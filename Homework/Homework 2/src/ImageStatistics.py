@@ -6,7 +6,7 @@ import sys
 import cv2
 
 class ImageStatistics(object):
-    def __init__(self, image, bits_per_pixel):
+    def __init__(self, image, bits_per_pixel=8):
         self.image = image
         self.resolution = ImageStatistics.calculate_resolution(image, bits_per_pixel)
         self.gray_levels = 2**bits_per_pixel
@@ -31,17 +31,22 @@ class ImageStatistics(object):
         plt.show()
 
     @staticmethod
-    def calculate_resolution(image, bits_per_pixel):
+    def calculate_resolution(image, bits_per_pixel=8):
         row_count, column_count = image.shape
         return row_count * column_count * bits_per_pixel
 
     @staticmethod
-    def calculate_histogram(image, bits_per_pixel):
-        columns = 2**bits_per_pixel
-        return cv2.calcHist([image], [0], None, [columns], [0, columns])
+    def calculate_histogram(image, bits_per_pixel=8):
+        histogram = np.zeros((2**bits_per_pixel, 1))
+
+        for row in image:
+            for pixel in row:
+                histogram[int(pixel), 0] += 1
+
+        return histogram
 
     @staticmethod
-    def calculate_pdf(image, bits_per_pixel):
+    def calculate_pdf(image, bits_per_pixel=8):
         row_count, column_count = image.shape
         N = row_count*column_count
         hist = ImageStatistics.calculate_histogram(image, bits_per_pixel)

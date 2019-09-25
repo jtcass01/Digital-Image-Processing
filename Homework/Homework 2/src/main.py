@@ -30,9 +30,11 @@ How do you explain this?
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 from ImageAnalysis import ImageAnalysis, display_bit_planes
 from ImageDisplay import ImageDisplay
+from ImageStatistics import ImageStatistics
 
 def three_five():
     """
@@ -78,7 +80,9 @@ def three_seven():
     [127, 127, 127, 191, 191, 191,   0,   0,   0,   0,   0,   0,   0],
     ])
 
+    ImageDisplay.display_image(figure_image)
     normalized_image = ImageStatistics.normalize_image(figure_image, 8)
+    ImageDisplay.display_image(normalized_image)
 
     histogram = ImageStatistics.calculate_histogram(figure_image)
     normalized_histogram = ImageStatistics.calculate_histogram(normalized_image)
