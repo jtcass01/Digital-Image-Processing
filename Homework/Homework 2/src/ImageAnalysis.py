@@ -9,15 +9,20 @@ class ImageAnalysis():
     def calculate_bit_planes(image, gray_scale=True, bits_per_pixel=8):
         bit_planes = None
 
+        # If the image is grayscale...
         if gray_scale:
+            # Retrieve the image shape
             rows, columns = image.shape
+            # Create bit planes of all zeros
             bit_planes = np.zeros((rows, columns, bits_per_pixel))
 
-        for row_index, row in enumerate(image):
-            for column_index, pixel in enumerate(row):
-                for bit_plane_index, bit_plane in enumerate(bit_planes):
-                    bit_plane[row_index, column_index] = (pixel & 2**bit_plane_index) >> bit_plane_index
+            # Update bit plane values by iterating over pixels
+            for row_index, row in enumerate(image):
+                for column_index, pixel in enumerate(row):
+                    for bit_plane_index, bit_plane in enumerate(bit_planes):
+                        bit_plane[row_index, column_index] = (pixel & 2**bit_plane_index) >> bit_plane_index
 
+        # Retrun produce bit planes
         return bit_planes
 
 def display_bit_planes(bit_planes):

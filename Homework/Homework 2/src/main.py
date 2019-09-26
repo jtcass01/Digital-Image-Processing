@@ -32,7 +32,7 @@ How do you explain this?
 import numpy as np
 import matplotlib.pyplot as plt
 
-from ImageAnalysis import ImageAnalysis, display_bit_planes
+from ImageAnalysis import ImageAnalysis
 from ImageDisplay import ImageDisplay
 from ImageStatistics import ImageStatistics
 
@@ -54,7 +54,7 @@ def three_five():
 
     bit_planes = ImageAnalysis.calculate_bit_planes(four_bit_image, bits_per_pixel=4)
 
-    display_bit_planes(bit_planes * 256)
+    ImageDisplay.display_bit_planes(bit_planes * 256)
 
 
 def three_seven():
@@ -80,12 +80,23 @@ def three_seven():
     [127, 127, 127, 191, 191, 191,   0,   0,   0,   0,   0,   0,   0],
     ])
 
+    rows, columns = figure_image.shape
+
     ImageDisplay.display_image(figure_image)
-    normalized_image = ImageStatistics.normalize_image(figure_image, 8)
-    ImageDisplay.display_image(normalized_image)
 
     histogram = ImageStatistics.calculate_histogram(figure_image)
-    normalized_histogram = ImageStatistics.calculate_histogram(normalized_image)
+
+    # calculate normalized histogram
+    counts = 0
+    for value in histogram:
+        counts += value
+
+    normalized_histogram = histogram / (rows*columns)
+
+    print(histogram)
+
+    plt.hist(figure_image)
+    plt.show()
 
     plt.plot(histogram, label="unnormalized histogram")
     plt.legend()
