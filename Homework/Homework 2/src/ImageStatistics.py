@@ -4,6 +4,7 @@ import imageio
 import os
 import sys
 import cv2
+from scipy.stats import entropy
 
 class ImageStatistics(object):
     def __init__(self, image, bits_per_pixel=8):
@@ -12,12 +13,20 @@ class ImageStatistics(object):
         self.gray_levels = 2**bits_per_pixel
         self.histogram = ImageStatistics.calculate_histogram(image, bits_per_pixel)
         self.probability_density_function = ImageStatistics.calculate_pdf(image, bits_per_pixel)
+        self.mean = ImageStatistics.calculate_mean(image)
+        self.variance = ImageStatistics.calculate_variance(image)
+        self.std_dev = ImageStatistics.calculate_std_dev(image)
+        self.entropy = ImageStatistics.calculate_entropy(image)
 
     def __str__(self):
         stringRepresentation = "Resolution: " + str(self.resolution) + "\n"
         stringRepresentation += "Number Gray Levels (L): " + str(self.gray_levels) + "\n"
         stringRepresentation += "Histogram Representation H(k): " + str(self.histogram) + "\n"
         stringRepresentation += "Probability Density Function P(k): " + str(self.probability_density_function) + "\n"
+        stringRepresentation += "Mean: " + str(self.mean) + "\n"
+        stringRepresentation += "Variance: " + str(self.variance) + "\n"
+        stringRepresentation += "Standard Deviance: " + str(self.std_dev) + "\n"
+        stringRepresentation += "Entropy: " + str(self.entropy) + "\n"
         return stringRepresentation
 
     def show_histogram(self):
@@ -55,6 +64,23 @@ class ImageStatistics(object):
     @staticmethod
     def normalize_image(image, bits_per_pixel=8):
         return image / (2**bits_per_pixel)
+
+    @staticmethod
+    def calculate_mean(image, bits_per_pixel=8):
+        return np.mean(image)
+
+    @staticmethod
+    def calculate_variance(image, bits_per_pixel=8):
+        return np.var(image)
+
+    @staticmethod
+    def calculate_std_dev(image, bits_per_pixel=8):
+        return np.std(image)
+
+    @staticmethod
+    def calculate_entropy(image, base=2):
+        _, counts = np.unique(image, return_counts=True)
+        return entropy(counts, base=base)
 
 
 if __name__ == "__main__":

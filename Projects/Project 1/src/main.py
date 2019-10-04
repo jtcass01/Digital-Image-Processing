@@ -36,6 +36,18 @@ def adaptive_histogram_equalization(image, neighborhood_shape = (5, 5)):
 
     return g
 
+def histogram_equalization(image):
+    g = np.zeros(image.shape)
+    image_cdf, bins = exposure.cumulative_distribution(image)
+    image_cdf *= 8
+
+    for row_index, row in enumerate(image):
+        for column_index, pixel in enumerate(row):
+            g[row_index, column_index] = image_cdf[pixel]
+
+    return g
+
+
 def adaptive_statistical_enhancement(image, neighborhood_shape = (5,5), k0=0.4, k1=0.02, k2=0.4, E=4):
     assert 0 <= k0 <= 1, "k0 must be a constant < 1"
     assert 0 <= k1 <= 1, "k1 must be a constant < 1"
