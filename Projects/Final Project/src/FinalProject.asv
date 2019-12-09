@@ -1,0 +1,58 @@
+wavelet_names = 'coif5', 'db1', 'db4', 'db8', 'db16', 'db32']
+
+for wavelet_index = 1:length(wavelet_names)
+    wavelet_index
+    wavelet_name = wavelet_names[wavelet_index]
+end
+
+wavelet_name = 'coif5'
+
+[h0 h1 f0 f1] = wfilters(wavelet_name);
+
+% Get the image
+f = mat2gray(imread('lenna.jpg'));
+sz1=size(f);
+
+% Perform Single-level 2D WLT
+[LL LH HL HH] = dwt2(f, wavelet_name);
+sz2=size(LL);
+
+% Perform Two Level 2d WLT by transmofring quandrant LL
+[LL1 LH1 HL1 HH1] = dwt2(LL, wavelet_name);
+sz3 = size(LL1);
+
+% Reconstruct Lossless Image
+LL2 = idwt2(LL1, LH1, HL1, HH1, wavelet_name, sz2);
+lossless_g = idwt2(LL2, LH, HL, HH, wavelet_name, sz1);
+lossless_snr = 20*log(norm(f,'fro')/norm(f-lossless_g,'fro'))
+
+
+% Sum the histograms across the 7 output sub images
+h1=hist(reshape(LL1, size(LL1, 1) * size(LL1, 2), 1), 256);
+h2=hist(reshape(LH1, size(LH1, 1) * size(LH1, 2), 1), 256); 
+h3=hist(reshape(HL1, size(HL1, 1) * size(HL1, 2), 1), 256); 
+h4=hist(reshape(HH1, size(HH1, 1) * size(HH1, 2), 1), 256); 
+h5=hist(reshape(LH, size(LH, 1) * size(LH, 2), 1), 256); 
+h6=hist(reshape(HL, size(HL, 1) * size(HL, 2), 1), 256); 
+h7=hist(reshape(HH, size(HH, 1) * size(HH, 2), 1), 256); 
+h=h1+h2+h3+h4+h5+h6+h7;
+h_sum = sum(h);
+
+% Compute the entropy of the lossless image
+h = h / h_sum; e = 0; L2 = log(2) ; for i = 1:256 if h(i) > 0 e = e-h(i)*log(h(i))/L2; end; end;
+
+% Compute the Compression Ratio
+lossless_compression_ratio = 8*512*512/(e*h_sum)
+
+% Reconstruct the lossy Image
+z1 = zeros(sz3);
+z2 = zeros(sz2);
+LL2 = idwt2(LL1, z1, z1, z1, wavelet_name, sz2);
+lossy_g = idwt2(LL2, z2, z2, z2, wavelet_name, sz1);
+lossy_snr = 20*log(norm(f,'fro')/norm(f-lossy_g,'fro'))
+
+% Compute the entropy of the lossy image
+h1_sum = sum(h1);
+h1 = h1 / h1_sum; e = 0; l2 = log(2); for i = 1:256 if h1(i) > 0 e = e - h1(i)*log(h1(i))/L2; end; end;
+lossy_compression_ratio = 8*512*512/(e*h1_sum)
+
